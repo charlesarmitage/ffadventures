@@ -33,7 +33,7 @@ describe("Adventurer and Monster Fight", function() {
   it("should minus 2 from monster stamina when monster loses", function() {
     adventurer.skill += 2;
 
-    ffBattle.fightRound(adventurer, monster);
+    ff.battle.fightRound(adventurer, monster);
 
     expect(monster.stamina).toEqual(8);
     expect(adventurer.stamina).toEqual(10);
@@ -42,7 +42,7 @@ describe("Adventurer and Monster Fight", function() {
   it('should minus 2 from adventurer stamina when adventurer loses', function(){
     monster.skill += 2;
 
-    ffBattle.fightRound(adventurer, monster);
+    ff.battle.fightRound(adventurer, monster);
 
     expect(adventurer.stamina).toEqual(8);
     expect(monster.stamina).toEqual(10);
@@ -50,46 +50,10 @@ describe("Adventurer and Monster Fight", function() {
 
   it('should not change monster or adventurer stamina when draw', function(){
 
-    ffBattle.fightRound(adventurer, monster);
+    ff.battle.fightRound(adventurer, monster);
 
     expect(adventurer.stamina).toEqual(10);
     expect(monster.stamina).toEqual(10);
-  });
-
-  it('should format adventurer wins result', function(){
-    adventurer.skill += 2;
-
-    var result = ffBattle.fightRound(adventurer, monster);
-
-    expect(ffFormat.formatBattleRound(result))
-      .toEqual(
-'Adventurer: 1 + 3 + 12 = 16\n' +
-'Monster: 1 + 3 + 10 = 14\n' +
-'Adventurer hits!');
-  });
-
-  it('should format monster wins result', function(){
-    monster.skill += 2;
-
-    var result = ffBattle.fightRound(adventurer, monster);
-
-    expect(ffFormat.formatBattleRound(result))
-      .toEqual(
-'Adventurer: 1 + 3 + 10 = 14\n' +
-'Monster: 1 + 3 + 12 = 16\n' +
-'Monster hits!');
-  });
-
-
-  it('should format draw result', function(){
-
-    var result = ffBattle.fightRound(adventurer, monster);
-
-    expect(ffFormat.formatBattleRound(result))
-      .toEqual(
-'Adventurer: 1 + 3 + 10 = 14\n' +
-'Monster: 1 + 3 + 10 = 14\n' +
-'Draw!');
   });
 
   it('should callback monsterDefeated callback when monster defeated', function(){
@@ -97,8 +61,8 @@ describe("Adventurer and Monster Fight", function() {
     monster.stamina = 2;
     var calledBack = false;
 
-    var result = ffBattle.fightRound(adventurer, monster);
-    ffBattle.checkBattle(result, {
+    var result = ff.battle.fightRound(adventurer, monster);
+    ff.battle.checkBattle(result, {
       monsterDefeated: function(defeatedMonster){
         calledBack = true;
         expect(defeatedMonster.stamina).toEqual(0);
@@ -113,8 +77,8 @@ describe("Adventurer and Monster Fight", function() {
     adventurer.stamina = 2;
     var calledBack = false;
 
-    var result = ffBattle.fightRound(adventurer, monster);
-    ffBattle.checkBattle(result, {
+    var result = ff.battle.fightRound(adventurer, monster);
+    ff.battle.checkBattle(result, {
       adventurerDefeated: function(defeatedAdventurer){
         calledBack = true;
         expect(defeatedAdventurer.stamina).toEqual(0);
@@ -125,7 +89,7 @@ describe("Adventurer and Monster Fight", function() {
   });
 
   it('should minus 2 from adventurer stamina when escaping', function(){
-    var result = ffBattle.escape(adventurer);
+    var result = ff.battle.escape(adventurer);
 
     expect(result.adventurer.stamina).toEqual(8);
   });
@@ -133,15 +97,15 @@ describe("Adventurer and Monster Fight", function() {
   it('should not escape when stamina is 2 or less', function(){
     adventurer.stamina = 2;
 
-    expect(ffBattle.isEscapable(adventurer)).toEqual(false);
+    expect(ff.battle.isEscapable(adventurer)).toEqual(false);
   });
 
   it('should be escapable when stamina is 3 or more', function(){
-    expect(ffBattle.isEscapable(adventurer)).toEqual(true);
+    expect(ff.battle.isEscapable(adventurer)).toEqual(true);
   });
 
   it('should have monster winning round when escaping', function(){
-    var result = ffBattle.escape(adventurer);
+    var result = ff.battle.escape(adventurer);
 
     expect(result.winner).toEqual('Monster');
   });
@@ -150,8 +114,8 @@ describe("Adventurer and Monster Fight", function() {
     adventurer.skill -= 2;
     adventurer.luck = 12;
 
-    var result = ffBattle.fightRound(adventurer, monster);
-    ffBattle.tryLuck(adventurer, monster, result);
+    var result = ff.battle.fightRound(adventurer, monster);
+    ff.battle.tryLuck(adventurer, monster, result);
 
     expect(adventurer.stamina).toEqual(9);
     expect(adventurer.luck).toEqual(11);
@@ -161,16 +125,16 @@ describe("Adventurer and Monster Fight", function() {
     adventurer.skill += 2;
     adventurer.luck = 12;
 
-    var result = ffBattle.fightRound(adventurer, monster);
-    ffBattle.tryLuck(adventurer, monster, result);
+    var result = ff.battle.fightRound(adventurer, monster);
+    ff.battle.tryLuck(adventurer, monster, result);
 
     expect(monster.stamina).toEqual(6);
     expect(adventurer.luck).toEqual(11);
   });
 
   it('should not change statistics when luck tried for a draw', function(){
-    var result = ffBattle.fightRound(adventurer, monster);
-    ffBattle.tryLuck(adventurer, monster, result);
+    var result = ff.battle.fightRound(adventurer, monster);
+    ff.battle.tryLuck(adventurer, monster, result);
 
     expect(adventurer.stamina).toEqual(10);
     expect(adventurer.luck).toEqual(12);
@@ -181,8 +145,8 @@ describe("Adventurer and Monster Fight", function() {
     adventurer.skill += 2;
     adventurer.luck = 2;
 
-    var result = ffBattle.fightRound(adventurer, monster);
-    ffBattle.tryLuck(adventurer, monster, result);
+    var result = ff.battle.fightRound(adventurer, monster);
+    ff.battle.tryLuck(adventurer, monster, result);
 
     expect(adventurer.stamina).toEqual(10);
     expect(adventurer.luck).toEqual(1);
@@ -194,8 +158,8 @@ describe("Adventurer and Monster Fight", function() {
     adventurer.skill += 2;
     adventurer.luck = 2;
 
-    var result = ffBattle.fightRound(adventurer, monster);
-    ffBattle.tryLuck(adventurer, monster, result);
+    var result = ff.battle.fightRound(adventurer, monster);
+    ff.battle.tryLuck(adventurer, monster, result);
 
     expect(adventurer.stamina).toEqual(10);
     expect(adventurer.luck).toEqual(1);
@@ -207,8 +171,8 @@ describe("Adventurer and Monster Fight", function() {
     adventurer.skill -= 2;
     adventurer.luck = 2;
 
-    var result = ffBattle.fightRound(adventurer, monster);
-    ffBattle.tryLuck(adventurer, monster, result);
+    var result = ff.battle.fightRound(adventurer, monster);
+    ff.battle.tryLuck(adventurer, monster, result);
 
     expect(adventurer.stamina).toEqual(7);
     expect(adventurer.luck).toEqual(1);
@@ -219,8 +183,8 @@ describe("Adventurer and Monster Fight", function() {
     adventurer.skill -= 2;
     adventurer.luck = 2;
 
-    var result = ffBattle.fightRound(adventurer, monster);
-    ffBattle.tryLuck(adventurer, monster, result);
+    var result = ff.battle.fightRound(adventurer, monster);
+    ff.battle.tryLuck(adventurer, monster, result);
 
     expect(adventurer.stamina).toEqual(7);
     expect(adventurer.luck).toEqual(1);
@@ -230,9 +194,9 @@ describe("Adventurer and Monster Fight", function() {
   it('should only allow luck to be used once per round', function(){
     adventurer.skill += 2;
 
-    var result = ffBattle.fightRound(adventurer, monster);
-    ffBattle.tryLuck(adventurer, monster, result);
-    ffBattle.tryLuck(adventurer, monster, result);
+    var result = ff.battle.fightRound(adventurer, monster);
+    ff.battle.tryLuck(adventurer, monster, result);
+    ff.battle.tryLuck(adventurer, monster, result);
 
     expect(monster.stamina).toEqual(6);
     expect(adventurer.luck).toEqual(11);
@@ -241,8 +205,8 @@ describe("Adventurer and Monster Fight", function() {
   it('should allow luck to be used successfully when escaping', function(){
     adventurer.luck = 12;
 
-    var result = ffBattle.escape(adventurer);
-    ffBattle.tryLuck(adventurer, monster, result);
+    var result = ff.battle.escape(adventurer);
+    ff.battle.tryLuck(adventurer, monster, result);
 
     expect(adventurer.stamina).toEqual(9);
     expect(adventurer.luck).toEqual(11);
@@ -252,8 +216,8 @@ describe("Adventurer and Monster Fight", function() {
   it('should allow luck to be used unsuccessfully when escaping', function(){
     adventurer.luck = 2;
 
-    var result = ffBattle.escape(adventurer);
-    ffBattle.tryLuck(adventurer, monster, result);
+    var result = ff.battle.escape(adventurer);
+    ff.battle.tryLuck(adventurer, monster, result);
 
     expect(adventurer.stamina).toEqual(7);
     expect(adventurer.luck).toEqual(1);
@@ -263,9 +227,9 @@ describe("Adventurer and Monster Fight", function() {
   it('should only allow luck to be used once per escape', function(){
     adventurer.luck = 12;
 
-    var result = ffBattle.escape(adventurer);
-    ffBattle.tryLuck(adventurer, monster, result);
-    ffBattle.tryLuck(adventurer, monster, result);
+    var result = ff.battle.escape(adventurer);
+    ff.battle.tryLuck(adventurer, monster, result);
+    ff.battle.tryLuck(adventurer, monster, result);
 
     expect(adventurer.stamina).toEqual(9);
     expect(adventurer.luck).toEqual(11);

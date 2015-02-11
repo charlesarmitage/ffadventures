@@ -66,7 +66,7 @@ describe("BattleSpec", function() {
   it('Adventurer wins round, monsters stamina should be decremented by 2', function(){
       adventurer.skill.incrementValue(2);
 
-      var result = ffBattle.fightRound(adventurer.toPlainStats(), monster);
+      var result = ff.battle.fightRound(adventurer.toPlainStats(), monster);
 
       expect(result.winner).toEqual('Adventurer');
       expect(result.monster.stamina).toEqual(monster.initialStamina - 2);
@@ -76,7 +76,7 @@ describe("BattleSpec", function() {
   it('Monster wins round, adventurers stamina should be decremented by 2', function(){
       monster.skill += 2;
 
-      var result = ffBattle.fightRound(adventurer.toPlainStats(), monster);
+      var result = ff.battle.fightRound(adventurer.toPlainStats(), monster);
 
       expect(result.winner).toEqual('Monster');
       expect(result.adventurer.stamina).toEqual(adventurer.stamina.initialValue() - 2);
@@ -87,7 +87,7 @@ describe("BattleSpec", function() {
   {
       adventurer.skill.incrementValue(2);
 
-      var result = ffBattle.fightRound(adventurer.toPlainStats(), viewModelMonster.toPlainStats());
+      var result = ff.battle.fightRound(adventurer.toPlainStats(), viewModelMonster.toPlainStats());
       viewModelMonster.updateViewModel(result.monster);
       adventurer.updateViewModel(result.adventurer);
 

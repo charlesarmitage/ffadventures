@@ -1,4 +1,4 @@
-describe("Adventurer and Monster Fight", function() {
+describe("Message Formatting", function() {
   var rollDice = ff.dice.rollTwoDice,
   adventurer,
   monster;
@@ -33,7 +33,7 @@ describe("Adventurer and Monster Fight", function() {
   it('should format adventurer wins result', function(){
     adventurer.skill += 2;
 
-    var result = ffBattle.fightRound(adventurer, monster);
+    var result = ff.battle.fightRound(adventurer, monster);
 
     expect(ffFormat.formatBattleRound(result))
       .toEqual(
@@ -45,7 +45,7 @@ describe("Adventurer and Monster Fight", function() {
   it('should format monster wins result', function(){
     monster.skill += 2;
 
-    var result = ffBattle.fightRound(adventurer, monster);
+    var result = ff.battle.fightRound(adventurer, monster);
 
     expect(ffFormat.formatBattleRound(result))
       .toEqual(
@@ -57,7 +57,7 @@ describe("Adventurer and Monster Fight", function() {
 
   it('should format draw result', function(){
 
-    var result = ffBattle.fightRound(adventurer, monster);
+    var result = ff.battle.fightRound(adventurer, monster);
 
     expect(ffFormat.formatBattleRound(result))
       .toEqual(

@@ -1,8 +1,8 @@
-var ffBattle = (function(ff){
+var ff = (function(ff){
 
-	var ffBattle = {};
+	ff.battle = {};
 
-	ffBattle.fightRound = function(adventurer, monster){
+	ff.battle.fightRound = function(adventurer, monster){
 	  var adventurerScore = ff.dice.rollTwoDice().add(adventurer.skill);
 	  var monsterScore = ff.dice.rollTwoDice().add(monster.skill);
 	  var attackerResults = 'Adventurer: ' + adventurerScore.text + ' Monster: ' + monsterScore.text;
@@ -26,7 +26,7 @@ var ffBattle = (function(ff){
 	  };
 	};
 
-	ffBattle.checkBattle = function(result, callbacks){
+	ff.battle.checkBattle = function(result, callbacks){
 		if(result.monster.stamina <= 0){
 			callbacks.monsterDefeated(result.monster);
 		} else if(result.adventurer.stamina <= 0){
@@ -34,7 +34,7 @@ var ffBattle = (function(ff){
 		}
 	};
 
-	ffBattle.escape = function(adventurer){
+	ff.battle.escape = function(adventurer){
 		adventurer.stamina -= 2;
 		return {
 			isLuckUsed : false,
@@ -44,7 +44,7 @@ var ffBattle = (function(ff){
 		};
 	};
 
-	ffBattle.isEscapable = function(adventurer){
+	ff.battle.isEscapable = function(adventurer){
 		return adventurer.stamina > 2;
 	};
 
@@ -68,7 +68,7 @@ var ffBattle = (function(ff){
 		}		
 	}
 
-	ffBattle.tryLuck = function(adventurer, monster, roundResult){
+	ff.battle.tryLuck = function(adventurer, monster, roundResult){
 		if(roundResult.isLuckUsed){
 			return;
 		} 
@@ -84,24 +84,5 @@ var ffBattle = (function(ff){
 		}
 	};
 
-	return ffBattle;
+	return ff;
 }(ff || {}));
-
-var ffFormat = (function(){
-	function formatBattleRoundResult(result){
-		var winnerText = result.winner + ' hits!';
-		if(result.winner == 'Draw'){
-			winnerText = 'Draw!';
-		}
-
-		return 'Adventurer: ' +
-				result.adventurerResult.text + '\n' +
-				'Monster: ' +
-				result.monsterResult.text + '\n' +
-				winnerText;
-	}
-
-	return {
-		formatBattleRound : formatBattleRoundResult
-	};
-}(ffFormat || {}));

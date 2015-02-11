@@ -72,7 +72,7 @@ var ff = (function(ff){
 	ff.storage.connectListToStorage(adventurer.notesList);
 
 	adventurer.attack = function(monster, roundResponse){
-		adventurer.lastRoundResult = ffBattle.fightRound(adventurer.toPlainStats(), monster.toPlainStats());
+		adventurer.lastRoundResult = ff.battle.fightRound(adventurer.toPlainStats(), monster.toPlainStats());
 		adventurer.updateViewModel(adventurer.lastRoundResult.adventurer);
 		monster.updateViewModel(adventurer.lastRoundResult.monster);
 
@@ -80,17 +80,17 @@ var ff = (function(ff){
 	};
 
 	adventurer.continueBattle = function(endBattleResponse){
-		ffBattle.checkBattle(adventurer.lastRoundResult, endBattleResponse);
+		ff.battle.checkBattle(adventurer.lastRoundResult, endBattleResponse);
 	};
 
 	adventurer.escape = function(escapeResponse){
-		adventurer.lastRoundResult = ffBattle.escape(adventurer.toPlainStats());
+		adventurer.lastRoundResult = ff.battle.escape(adventurer.toPlainStats());
 		adventurer.updateViewModel(adventurer.lastRoundResult.adventurer);
 		escapeResponse();
 	};
 
 	adventurer.tryLuck = function(){
-		ffBattle.tryLuck(adventurer.lastRoundResult.adventurer,
+		ff.battle.tryLuck(adventurer.lastRoundResult.adventurer,
 						 adventurer.lastRoundResult.monster,
 						 adventurer.lastRoundResult);
 		adventurer.updateViewModel(adventurer.lastRoundResult.adventurer);
