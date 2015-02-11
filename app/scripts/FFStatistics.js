@@ -48,6 +48,10 @@ var ff = (function(ff){
 							this.stamina];
 	};
 
+	Character.prototype.isAlive = function(){
+		return this.stamina.currentValue() != 0;
+	};
+
 	Character.prototype.toPlainStats = function(){
         return {
           name : this.name(),

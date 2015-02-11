@@ -56,6 +56,19 @@ describe("Adventurer and Monster Fight", function() {
     expect(monster.stamina).toEqual(10);
   });
 
+  it('monster should be dead when monster is defeated', function(){
+    adventurer.skill += 2;
+    monster.stamina = 2;
+
+    var result = ff.battle.fightRound(adventurer, monster);
+
+    var defeatedMonster = Object.create(new ff.Character('...'));
+    defeatedMonster.updateViewModel(result.monster);
+
+    expect(monster.stamina).toEqual(0);
+    expect(defeatedMonster.isAlive()).toEqual(false);
+  });
+
   it('should callback monsterDefeated callback when monster defeated', function(){
     adventurer.skill += 2;
     monster.stamina = 2;
@@ -70,6 +83,18 @@ describe("Adventurer and Monster Fight", function() {
     });
 
     expect(calledBack).toEqual(true);
+  });
+
+  it('adventurer should be dead when adventurer is defeated', function(){
+    monster.skill += 2;
+    adventurer.stamina = 2;
+
+    var result = ff.battle.fightRound(adventurer, monster);
+
+    ff.adventurer.updateViewModel(result.adventurer);
+
+    expect(adventurer.stamina).toEqual(0);
+    expect(ff.adventurer.isAlive()).toEqual(false);
   });
 
   it('should callback adventurer callback when adventurer defeated', function(){
