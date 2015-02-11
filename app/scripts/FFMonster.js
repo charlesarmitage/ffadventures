@@ -18,7 +18,9 @@ var ff = (function(ff){
 		currentMonster : new Monster('Unknown'),
 		defeatedMonsters : ko.observableArray()
 	};
+	
 	monstersViewModel.defeatedMonsters.listKey = 'defeatedMonsters';
+	ff.storage.connectListToStorage(monstersViewModel.defeatedMonsters);
 
 	ff.monsters = monstersViewModel;
 	return ff;
