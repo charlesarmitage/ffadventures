@@ -9,7 +9,7 @@ var ff = (function(ff){
 	ff.storage.loadFromStorage = function(statistic){
 		statistic.initialValue(loadStat("initial" + statistic.name));
 		statistic.currentValue(loadStat("current" + statistic.name));
-	}
+	};
 
 	ff.storage.saveToStorage = function(statistic){
 		console.log("Stat changed: " + statistic.name + ", " + statistic.currentValue());
@@ -30,14 +30,15 @@ var ff = (function(ff){
 		statistic.currentValue.subscribe(function(newValue){
 			ff.storage.saveToStorage(statistic);
 		});
-	}
+	};
 
-	function addNewItem(item){
+	function addNewItem(storedItem){
 		return {
 			to : function (list){
 				var listKey = list.listKey;
 
-				item.name = ko.observable(item.name || '?');
+				var item = {};
+				item.name = ko.observable(storedItem.name || '?');
 				item.name.subscribe(function(newValue){
 						localStorage.setItem(listKey, JSON.stringify(ko.toJS(list)));
 				});				
@@ -47,7 +48,7 @@ var ff = (function(ff){
 					localStorage.setItem(listKey, JSON.stringify(ko.toJS(list)));
 				});
 
-				item.count = ko.observable(item.count || 1);
+				item.count = ko.observable(storedItem.count || 1);
 				item.count.subscribe(function(newValue){
 					localStorage.setItem(listKey, JSON.stringify(ko.toJS(list)));
 				});

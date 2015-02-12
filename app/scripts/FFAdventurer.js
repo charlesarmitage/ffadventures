@@ -3,25 +3,9 @@ var ff = (function(ff){
 	var adventurer = Object.create(new ff.Character('...'));
 	ff.adventurer = initialize(adventurer);
 
-
 	function initialize(adventurer){
 		adventurer.luck = new ff.Statistic('Luck');
 		adventurer.statistics.push(adventurer.luck);
-
-		adventurer.name.subscribe(function(name){
-			localStorage.setItem('adventurerName', name);
-		});
-
-		for(var statistic in adventurer.statistics){
-			ff.storage.loadFromStorage(adventurer.statistics[statistic]);
-			ff.storage.subscribeToStatistic(adventurer.statistics[statistic]);
-		}
-
-		var storedName = localStorage.getItem('adventurerName');
-		if(storedName !== null && storedName != 'undefined'){
-			adventurer.name(storedName);
-		}
-
 		adventurer.isNameEditable = ko.observable(false);
 		return adventurer;
 	}
@@ -43,33 +27,21 @@ var ff = (function(ff){
 
 	adventurer.reset = function(){
 		for(var statistic in adventurer.statistics){
-			var stat = adventurer.statistics[statistic];
 			adventurer.statistics[statistic].reset();
-			ff.storage.remove(stat);
 		}
 		ff.adventurer.equipmentItemsList([]);
 		ff.adventurer.treasureItemsList([]);
 		ff.adventurer.notesList([]);
-
-		ff.storage.resetList(adventurer.equipmentItemsList);
-		ff.storage.resetList(adventurer.treasureItemsList);
-		ff.storage.resetList(adventurer.notesList);
 	};
 
 	adventurer.newEquipmentItem = ko.observable('');
 	adventurer.equipmentItemsList = ko.observableArray();
-	adventurer.equipmentItemsList.listKey = 'equipmentItemsList';
-	ff.storage.connectListToStorage(adventurer.equipmentItemsList);
 
 	adventurer.newTreasureItem = ko.observable('');
 	adventurer.treasureItemsList = ko.observableArray();
-	adventurer.treasureItemsList.listKey = 'treasureItemsList';
-	ff.storage.connectListToStorage(adventurer.treasureItemsList);
 
 	adventurer.newNote = ko.observable('');
 	adventurer.notesList = ko.observableArray();
-	adventurer.notesList.listKey = 'notesList';
-	ff.storage.connectListToStorage(adventurer.notesList);
 
 	adventurer.attack = function(monster, roundResponse){
 		adventurer.lastRoundResult = ff.battle.fightRound(adventurer.toPlainStats(), monster.toPlainStats());
@@ -101,6 +73,45 @@ var ff = (function(ff){
 		adventurer.luck.currentValue(currentLuck - 1);
 
 		return currentLuck >= ff.dice.rollTwoDice().result;
+	};
+
+	ff.adventurerStorage = {};
+
+	ff.adventurerStorage.loadAdventurer = function(adventurer){
+
+		adventurer.name.subscribe(function(name){
+			localStorage.setItem('adventurerName', name);
+		});
+
+		for(var statistic in adventurer.statistics){
+			ff.storage.loadFromStorage(adventurer.statistics[statistic]);
+			ff.storage.subscribeToStatistic(adventurer.statistics[statistic]);
+		}
+
+		var storedName = localStorage.getItem('adventurerName');
+		if(storedName !== null && typeof storedName != 'undefined'){
+			adventurer.name(storedName);
+		}
+
+		adventurer.equipmentItemsList.listKey = 'equipmentItemsList';
+		ff.storage.connectListToStorage(adventurer.equipmentItemsList);
+
+		adventurer.treasureItemsList.listKey = 'treasureItemsList';
+		ff.storage.connectListToStorage(adventurer.treasureItemsList);
+
+		adventurer.notesList.listKey = 'notesList';
+		ff.storage.connectListToStorage(adventurer.notesList);
+	};
+
+	ff.adventurerStorage.removeAdventurer = function(adventurer){
+
+		for(var statistic in adventurer.statistics){
+			ff.storage.remove(adventurer.statistics[statistic]);
+		}
+
+		ff.storage.resetList(adventurer.equipmentItemsList);
+		ff.storage.resetList(adventurer.treasureItemsList);
+		ff.storage.resetList(adventurer.notesList);
 	};
 
 	return ff;

@@ -49,7 +49,7 @@ var ff = (function(ff){
 	};
 
 	Character.prototype.isAlive = function(){
-		return this.stamina.currentValue() != 0;
+		return this.stamina.currentValue() !== 0;
 	};
 
 	Character.prototype.toPlainStats = function(){
